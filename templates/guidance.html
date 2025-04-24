@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Dharma Guidance - DharmaDarshan</title>
+    <link rel="stylesheet" href="{{ url_for('serve_css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
+        🙏 Personalized Dharma Guidance
+    </div>
+    
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn" onclick="toggleSidebar()">⬅</span>
+        <a href="{{ url_for('spiritual') }}">Spiritual Wisdom Repository</a>
+        <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
+        <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('community') }}">Community Support</a>
+        <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
+    </div>
+
+    <div class="guidance-container" id="guidanceContainer">
+        {% if chat_history %}
+            {% for message in chat_history %}
+                <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                    <strong>{% if message.role == 'user' %}You:{% else %}Guide:{% endif %}</strong>
+                    <p>{{ message.content }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="message bot-message">
+                <strong>Guide:</strong>
+                <p>Welcome to DharmaDarshan! I'm here to help you explore spiritual wisdom. What would you like to know?</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="POST" action="{{ url_for('guidance') }}" class="message-form">
+        <input type="text" name="user_input" placeholder="Ask your question..." required>
+        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+    </form>
+
+    <div class="footer">
+        <i class="fas fa-home" data-page="home"></i>
+        <i class="fas fa-search" data-page="search"></i>
+        <i class="fas fa-user" data-page="profile"></i>
+    </div>
+
+    <script>
+        // Initialize route URLs
+        const routeUrls = {
+            'home': '{{ url_for("home") }}',
+            'spiritual': '{{ url_for("spiritual") }}',
+            'games': '{{ url_for("games") }}',
+            'guidance': '{{ url_for("guidance") }}',
+            'community': '{{ url_for("community") }}',
+            'challenges': '{{ url_for("challenges") }}',
+            'profile': '{{ url_for("profile") }}',
+            'search': '{{ url_for("search") }}'
+        };
+
+        // Sidebar toggle function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.getElementById('menuBtn').style.display = 
+                sidebar.classList.contains('active') ? 'none' : 'block';
+        }
+
+        // Footer navigation
+        document.querySelectorAll('.footer i').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const page = icon.getAttribute('data-page');
+                if (routeUrls[page]) {
+                    window.location.href = routeUrls[page];
+                }
+            });
+        });
+
+        // Auto-scroll to bottom of chat
+        window.onload = function() {
+            const container = document.getElementById('guidanceContainer');
+            container.scrollTop = container.scrollHeight;
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual Wisdom Repository</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
+        📖 Spiritual Wisdom Repository
+    </div>
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn" onclick="toggleSidebar()">⬅</span>
+        <a href="#" onclick="redirectTo('home.html')">Home</a>
+        <a href="#" onclick="redirectTo('games.html')">Interactive Decision-Making Games</a>
+        <a href="#" onclick="redirectTo('guidance.html')">Personalized Dharma Guidance</a>
+        <a href="#" onclick="redirectTo('community.html')">Community Support</a>
+        <a href="#" onclick="redirectTo('challenges.html')">Daily Dharma Challenges</a>
+    </div>
+    
+    <div class="book-container">
+        <div class="book" onclick="openBook('bhagavad-gita.html')">
+            <img src="/Gallery/The Bhagvad Gita.jpeg" alt="Bhagavad Gita">
+        </div>
+        <div class="book" onclick="openBook('ramayana.html')">
+            <img src="/Gallery/Ramayana.jpg" alt="Ramayana">
+        </div>
+        <div class="book" onclick="openBook('mahabharata.html')">
+            <img src="/Gallery/Mahabharat.jpg" alt="Mahabharata">
+        </div>
+        <div class="book" onclick="openBook('upanishads.html')">
+            <img src="/Gallery/Upanishad.jpg" alt="Upanishads">
+        </div>
+        <div class="book" onclick="openBook('vedas.html')">
+            <img src="/Gallery/Vedas.jpg" alt="Vedas">
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-home" onclick="redirectTo('home.html')"></i>
+        <i class="fas fa-search" onclick="redirectTo('search.html')"></i>
+        <i class="fas fa-user" onclick="redirectTo('profile.html')"></i>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('menuBtn');
+
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+                sidebar.style.display = "none"; // Hide sidebar after transition
+                menuBtn.style.display = "block";
+            } else {
+                sidebar.style.left = "0px";
+                sidebar.style.display = "block"; // Show sidebar before transition
+                menuBtn.style.display = "none";
+            }
+        }
+        
+        function redirectTo(page) {
+            window.location.href = page;
+        }
+        
+        function openBook(bookPage) {
+            window.location.href = bookPage;
+        }
+    </script>
+</body>
+</html>

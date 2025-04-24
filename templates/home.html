@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharmadarshan App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
+        ⚡ Daily Dharma Challenge: Meditate for 10 minutes today
+    </div>
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn" onclick="toggleSidebar()">⬅</span>
+        <a href="#" onclick="redirectTo('spiritual.html')">Spiritual Wisdom Repository</a>
+        <a href="#" onclick="redirectTo('games.html')">Interactive Decision-Making Games</a>
+        <a href="#" onclick="redirectTo('guidance.html')">Personalized Dharma Guidance</a>
+        <a href="#" onclick="redirectTo('community.html')">Community Support</a>
+        <a href="#" onclick="redirectTo('challenges.html')">Daily Dharma Challenges</a>
+    </div>
+    
+    <div class="feed-container" id="feedContainer">
+        <div class="feed-item">
+            <img src="/Gallery/Mahabharat.jpg" alt="Ancient Text">
+            <div class="feed-text">The Bhagavad Gita teaches us that true wisdom comes from selflessness and devotion.</div>
+        </div>
+        <div class="feed-item">
+            <img src="/Gallery/Ramayana.jpg" alt="Ancient Story">
+            <div class="feed-text">A tale from the Ramayana: How Hanuman's devotion moved mountains.</div>
+        </div>
+        <div class="feed-item">
+            <img src="/Gallery/The Bhagvad Gita.jpeg" alt="Ancient Story">
+            <div class="feed-text">Lessons from the Mahabharata: The importance of duty and righteousness.</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <i class="fas fa-home" onclick="redirectTo('home.html')"></i>
+        <i class="fas fa-search" onclick="redirectTo('search.html')"></i>
+        <i class="fas fa-user" onclick="redirectTo('profile.html')"></i>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('menuBtn');
+
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+                sidebar.style.display = "none"; // Hide sidebar after transition
+                menuBtn.style.display = "block";
+            } else {
+                sidebar.style.left = "0px";
+                sidebar.style.display = "block"; // Show sidebar before transition
+                menuBtn.style.display = "none";
+            }
+        }
+        
+        function redirectTo(page) {
+            window.location.href = page;
+        }
+        
+        let currentIndex = 0;
+        const feeds = document.querySelectorAll(".feed-item");
+        document.addEventListener("wheel", function(event) {
+            if (event.deltaY > 0 && currentIndex < feeds.length - 1) {
+                currentIndex++;
+            } else if (event.deltaY < 0 && currentIndex > 0) {
+                currentIndex--;
+            }
+            document.getElementById("feedContainer").scrollTo({
+                top: currentIndex * window.innerHeight,
+                behavior: "smooth"
+            });
+        });
+    </script>
+</body>
+</html>

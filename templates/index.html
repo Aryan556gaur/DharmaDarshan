@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DharmaDarshan - Home</title>
+    <link rel="stylesheet" href="{{ url_for('serve_css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Additional inline styles specific to index.html */
+        .feed-container {
+            scroll-behavior: smooth;
+        }
+        .feed-item {
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
+        ⚡ Daily Dharma Challenge: Meditate for 10 minutes today
+    </div>
+    
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn" onclick="toggleSidebar()">⬅</span>
+        <a href="{{ url_for('spiritual') }}">Spiritual Wisdom Repository</a>
+        <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
+        <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
+        <a href="{{ url_for('community') }}">Community Support</a>
+        <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
+    </div>
+    
+    <div class="feed-container" id="feedContainer">
+        {% for item in feed_items %}
+        <div class="feed-item">
+            <img src="{{ url_for('serve_image', filename=item.img) }}" alt="Dharma Wisdom" loading="lazy">
+            <div class="feed-text">{{ item.text }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="footer">
+        <i class="fas fa-home" onclick="redirectTo('home')"></i>
+        <i class="fas fa-search" onclick="redirectTo('search')"></i>
+        <i class="fas fa-user" onclick="redirectTo('profile')"></i>
+    </div>
+    
+    <script>
+        // Initialize route mappings
+        const routeUrls = {
+            'home': '{{ url_for("home") }}',
+            'spiritual': '{{ url_for("spiritual") }}',
+            'games': '{{ url_for("games") }}',
+            'guidance': '{{ url_for("guidance") }}',
+            'community': '{{ url_for("community") }}',
+            'challenges': '{{ url_for("challenges") }}',
+            'profile': '{{ url_for("profile") }}',
+            'search': '{{ url_for("search") }}'
+        };
+
+        // Sidebar toggle function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.getElementById('menuBtn').style.display = 
+                sidebar.classList.contains('active') ? 'none' : 'block';
+        }
+
+        // Navigation function
+        function redirectTo(page) {
+            if (routeUrls[page]) {
+                window.location.href = routeUrls[page];
+            } else {
+                console.error('Route not found:', page);
+            }
+        }
+
+        // Feed scrolling functionality
+        let currentIndex = 0;
+        const feedContainer = document.getElementById('feedContainer');
+        const feedItems = document.querySelectorAll('.feed-item');
+        
+        // Handle mouse wheel scrolling
+        feedContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY > 0 && currentIndex < feedItems.length - 1) {
+                currentIndex++;
+            } else if (e.deltaY < 0 && currentIndex > 0) {
+                currentIndex--;
+            }
+            scrollToFeedItem(currentIndex);
+        });
+
+        // Handle touch events for mobile
+        let touchStartY = 0;
+        feedContainer.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: false });
+
+        feedContainer.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touchY = e.touches[0].clientY;
+            const deltaY = touchY - touchStartY;
+            
+            if (Math.abs(deltaY) > 50) {
+                if (deltaY > 0 && currentIndex > 0) {
+                    currentIndex--;
+                } else if (deltaY < 0 && currentIndex < feedItems.length - 1) {
+                    currentIndex++;
+                }
+                scrollToFeedItem(currentIndex);
+                touchStartY = touchY;
+            }
+        }, { passive: false });
+
+        // Smooth scroll to specific feed item
+        function scrollToFeedItem(index) {
+            feedContainer.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Initialize first item as active
+        window.addEventListener('load', () => {
+            if (feedItems.length > 0) {
+                feedItems[0].classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

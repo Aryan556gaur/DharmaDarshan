@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - DharmaDarshan</title>
+    <link rel="stylesheet" href="{{ url_for('serve_css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
+        🔍 Search DharmaDarshan
+    </div>
+    
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn" onclick="toggleSidebar()">⬅</span>
+        <a href="{{ url_for('spiritual') }}">Spiritual Wisdom Repository</a>
+        <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
+        <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('community') }}">Community Support</a>
+        <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
+    </div>
+    
+    <div class="search-page">
+        <div class="search-box">
+            <form method="POST" action="{{ url_for('search') }}">
+                <input type="text" name="query" placeholder="Search for wisdom, guidance, or community..." 
+                       value="{{ query if query else '' }}" required>
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        
+        <div class="search-results">
+            {% if results %}
+                <h3>Results for "{{ query }}"</h3>
+                {% for result in results %}
+                    <div class="result-item">
+                        <p>{{ result }}</p>
+                    </div>
+                {% endfor %}
+            {% elif query %}
+                <p>No results found for "{{ query }}"</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-home" onclick="redirectTo('home')"></i>
+        <i class="fas fa-search" onclick="redirectTo('search')"></i>
+        <i class="fas fa-user" onclick="redirectTo('profile')"></i>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        
+        function redirectTo(page) {
+            window.location.href = `{{ url_for('${page}') }}`;
+        }
+    </script>
+</body>
+</html>

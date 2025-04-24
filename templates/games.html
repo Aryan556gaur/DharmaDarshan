@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Games - DharmaDarshan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Game-specific styles */
+        .games-container {
+            padding: 20px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 15px;
+        }
+        
+        .game-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .game-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-btn" id="menuBtn">☰</div>
+        🎮 Interactive Dharma Games
+    </div>
+    
+    <div class="sidebar" id="sidebar">
+        <span class="back-btn">⬅</span>
+        <a href="{{ url_for('spiritual') }}">Spiritual Wisdom Repository</a>
+        <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
+        <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('community') }}">Community Support</a>
+        <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
+    </div>
+    
+    <div class="games-container">
+        <div class="game-card" onclick="launchGame('karma')">
+            <img src="{{ url_for('static', filename='Gallery/karma-game.jpg') }}" alt="Karma Game" class="game-image">
+            <div class="game-info">
+                <div class="game-title">The Karma Challenge</div>
+                <div class="game-desc">Make choices and see their karmic consequences</div>
+            </div>
+        </div>
+        
+        <div class="game-card" onclick="launchGame('dharma')">
+            <img src="{{ url_for('static', filename='Gallery/dharma-game.jpg') }}" alt="Dharma Game" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Dharma Path</div>
+                <div class="game-desc">Navigate through moral dilemmas from ancient texts</div>
+            </div>
+        </div>
+        
+        <div class="game-card" onclick="launchGame('meditation')">
+            <img src="{{ url_for('static', filename='Gallery/meditation-game.jpg') }}" alt="Meditation Game" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Mindful Moments</div>
+                <div class="game-desc">Interactive meditation and mindfulness exercises</div>
+            </div>
+        </div>
+        
+        <div class="game-card" onclick="launchGame('quiz')">
+            <img src="{{ url_for('static', filename='Gallery/quiz-game.jpg') }}" alt="Quiz Game" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Dharma Quiz</div>
+                <div class="game-desc">Test your knowledge of spiritual teachings</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <i class="fas fa-home" data-page="home"></i>
+        <i class="fas fa-search" data-page="search"></i>
+        <i class="fas fa-user" data-page="profile"></i>
+    </div>
+    
+    <script>
+        // Initialize route URLs
+        const routeUrls = {
+            'home': "{{ url_for('home') }}",
+            'spiritual': "{{ url_for('spiritual') }}",
+            'games': "{{ url_for('games') }}",
+            'guidance': "{{ url_for('guidance') }}",
+            'community': "{{ url_for('community') }}",
+            'challenges': "{{ url_for('challenges') }}",
+            'profile': "{{ url_for('profile') }}",
+            'search': "{{ url_for('search') }}"
+        };
+
+        // Navigation functions
+        document.getElementById('menuBtn').addEventListener('click', toggleSidebar);
+        document.querySelector('.back-btn').addEventListener('click', toggleSidebar);
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.getElementById('menuBtn').style.display = 
+                sidebar.classList.contains('active') ? 'none' : 'block';
+        }
+
+        document.querySelectorAll('.footer i').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const page = icon.getAttribute('data-page');
+                if (routeUrls[page]) {
+                    window.location.href = routeUrls[page];
+                }
+            });
+        });
+
+        // Game launching function
+        function launchGame(gameType) {
+            // This would be replaced with actual game loading logic
+            alert(`Launching ${gameType} game - this would load the actual game in a real implementation`);
+            
+            // Example of how you might implement this:
+            // window.location.href = `/game/${gameType}`;
+            // Then create a route in Flask to handle different game types
+        }
+    </script>
+</body>
+</html>
