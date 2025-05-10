@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dharmic Channels</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #36393f;
+      color: white;
+    }
+
+    .header {
+      background-color: #202225;
+      padding: 1rem;
+      font-weight: bold;
+      border-bottom: 1px solid #2f3136;
+      text-align: center;
+    }
+
+    .channels-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+
+    .channel-card {
+      background-color: #2f3136;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+
+    .channel-card:hover {
+      transform: scale(1.02);
+    }
+
+    .channel-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .channel-content {
+      padding: 1rem;
+    }
+
+    .channel-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #7289da;
+    }
+
+    .channel-desc {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .live-tag {
+      background-color: red;
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
+      background-color: #5865f2;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #4752c4;
+    }
+
+    .bottom-nav {
+      background-color: #202225;
+      padding: 1rem;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      border-top: 1px solid #2f3136;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">📺 Dharmic Channels</div>
+
+  <div class="channels-container">
+    <!-- Example Channel 1 -->
+    <div class="channel-card">
+      <img src="{{ url_for('static', filename='Gallery/The Bhagvad Gita.jpg') }}" class="channel-img" alt="Gita Channel">
+      <div class="channel-content">
+        <div class="live-tag">🔴 LIVE</div>
+        <div class="channel-name">Bhagavad Gita Explained</div>
+        <div class="channel-desc">Live discourses on the Gita with practical life applications.</div>
+        <button class="btn">Join Live</button>
+        <button class="btn">Follow</button>
+      </div>
+    </div>
+
+    <!-- Example Channel 2 -->
+    <div class="channel-card">
+      <img src="{{ url_for('static', filename='Gallery/Ramayana.jpg') }}" class="channel-img" alt="Ramayana Channel">
+      <div class="channel-content">
+        <div class="channel-name">Ramayana Katha</div>
+        <div class="channel-desc">Heart-touching stories from Ramayana for daily inspiration.</div>
+        <button class="btn">Watch</button>
+        <button class="btn">Follow</button>
+      </div>
+    </div>
+
+    <!-- Add more channels dynamically using Jinja if needed -->
+    {% for channel in channels %}
+    <div class="channel-card">
+      <img src="{{ url_for('static', filename=channel.image) }}" class="channel-img" alt="{{ channel.name }}">
+      <div class="channel-content">
+        {% if channel.live %}
+          <div class="live-tag">🔴 LIVE</div>
+        {% endif %}
+        <div class="channel-name">{{ channel.name }}</div>
+        <div class="channel-desc">{{ channel.description }}</div>
+        {% if channel.live %}
+          <button class="btn">Join Live</button>
+        {% else %}
+          <button class="btn">Watch</button>
+        {% endif %}
+        <button class="btn">Follow</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="bottom-nav">🏠 Home | 📺 Channels | 📘 Scriptures | 👤 Profile</div>
+
+</body>
+</html>

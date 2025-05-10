@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request, session, send_from_directory, jsonify
+from flask import Flask, render_template, request, session, send_from_directory, jsonify, redirect, url_for
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationSummaryMemory
 from langchain_community.embeddings import HuggingFaceEmbeddings
-import os
+from langchain_core.messages import HumanMessage
+import os, time, random
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -54,17 +55,43 @@ memory = ConversationSummaryMemory(
     input_key="query"
 )
 
+AGENT_ROLES = [
+    "You are a philosopher. Respond with depth and wisdom.",
+    "You are a tech enthusiast. Talk with excitement about new tech.",
+    "You are a skeptic. Question everything others say.",
+    "You are a peacemaker. Try to keep the conversation balanced and kind."
+]
+
+# Agent names
+names = ["Aryan", "Varun", "Devansh", "Karan"]
+
+# Global message history
+messages = []
+
+def get_video_id(url):
+    # For YouTube Shorts, extract the ID from the URL after "shorts/"
+    if 'shorts' in url:
+        return url.split('/')[-1]
+    # For regular YouTube videos, extract the ID after "v="
+    elif 'youtube.com' in url and 'v=' in url:
+        return url.split('v=')[-1]
+    return url  # Default return if no match
+
+
 @app.route('/')
 @app.route('/home')
+@app.route('/home.html')
 def home():
     feed_items = [
-        {"img": "Mahabharat.jpg", "text": "The Bhagavad Gita teaches us that true wisdom comes from selflessness and devotion."},
-        {"img": "Ramayana.jpg", "text": "A tale from the Ramayana: How Hanuman's devotion moved mountains."},
-        {"img": "The Bhagvad Gita.jpeg", "text": "Lessons from the Mahabharata: The importance of duty and righteousness."}
+        {'video_url': 'https://www.youtube.com/shorts/4uAz1IVw5F8', 'text': 'Meditate for 10 minutes today'},
+        {'video_url': 'https://www.youtube.com/shorts/jZrg1Jqw9uw', 'text': 'Reflect on your actions from yesterday'},
+        {'video_url': 'https://www.youtube.com/shorts/iiyMhpV0JaA', 'text': 'Live your Dharma today'},
     ]
-    return render_template('index.html', feed_items=feed_items)
+    return render_template('index.html', feed_items=feed_items, get_video_id=get_video_id)
+
 
 @app.route('/guidance', methods=['GET', 'POST'])
+@app.route('/guidance.html', methods=['GET', 'POST'])
 def guidance():
     if 'chat_history' not in session:
         session['chat_history'] = [{
@@ -97,6 +124,7 @@ def guidance():
     return render_template('guidance.html', chat_history=session.get('chat_history', []))
 
 @app.route('/search', methods=['GET', 'POST'])
+@app.route('/search.html', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
         query = request.form.get('query')
@@ -107,24 +135,108 @@ def search():
     return render_template('search.html')
 
 @app.route('/spiritual')
+@app.route('/spiritual.html')
 def spiritual():
     # Add your logic here to fetch spiritual wisdom content
     return render_template('spiritual.html')
 
 # Add these routes if they don't exist
 @app.route('/games')
+@app.route('/games.html')
 def games():
     return render_template('games.html')
 
-@app.route('/community')
-def community():
-    return render_template('community.html')
+@app.route('/channels')
+@app.route('/channels.html')
+def channels():
+    channels_data = [
+        {
+            'name': 'Bhagavad Gita Explained',
+            'description': 'Live discourses on the Gita with practical life applications.',
+            'image': 'Gallery/The Bhagvad Gita.jpg',
+            'live': True
+        },
+        {
+            'name': 'Ramayana Katha',
+            'description': 'Heart-touching stories from Ramayana for daily inspiration.',
+            'image': 'Gallery/Ramayana.jpg',
+            'live': False
+        }
+    ]
+    return render_template('channels.html', channels=channels_data)
 
-@app.route('/challenges')
+
+@app.route('/community', methods=['GET', 'POST'])
+@app.route('/community.html', methods=['GET', 'POST'])
+def community():
+    if request.method == 'POST':
+        user_input = request.form['user_input']
+        messages.append(f"You: {user_input}")
+
+        # Last user message is the base for responses
+        last_message = user_input
+
+        agents = [llm for _ in range(4)]
+
+        for idx, agent in enumerate(agents):
+            system_instruction = AGENT_ROLES[idx]
+
+            # Compose prompt with system instruction and conversation history
+            prompt = (
+                f"{system_instruction}\n"
+                f"Conversation so far:\n{format_history(messages)}\n\n"
+                f"Respond to: \"{last_message}\""
+            )
+
+            response = agent.invoke([HumanMessage(content=prompt)])
+
+            # Store response as plain text
+            messages.append(f"{names[idx]}: {response}")
+            last_message = response  # Agents react to previous response
+
+            time.sleep(random.uniform(5, 10))  # Delay between agent replies
+
+    return render_template('community.html', messages=messages)
+
+
+# Utility function to format history
+def format_history(msg_list):
+    return "\n".join(msg_list[-10:])  # Only show last 10 messages for context
+
+
+
+
+Daily_challenges = [
+    {'id': 1, 'title': '5 min Meditation', 'description': 'Focus fully for 5 minutes.', 'completed': False},
+    {'id': 2, 'title': 'Do a Good Deed', 'description': 'Help someone selflessly today.', 'completed': False},
+    {'id': 3, 'title': 'Speak Truth', 'description': 'Speak only truth all day.', 'completed': False}
+]
+
+@app.route('/challenges', methods=['GET'])
+@app.route('/challenges.html', methods=['GET'])
 def challenges():
-    return render_template('challenges.html')
+    completed = sum(1 for ch in Daily_challenges if ch['completed'])
+    total = len(Daily_challenges)
+    remaining = total - completed
+    score = completed * 10  # simple scoring rule
+    return render_template(
+        'challenges.html',
+        challenges=Daily_challenges,
+        completed=completed,
+        remaining=remaining,
+        score=score
+    )
+
+@app.route('/challenges/complete/<int:ch_id>', methods=['POST'])
+def complete_challenge(ch_id):
+    for ch in Daily_challenges:
+        if ch['id'] == ch_id:
+            ch['completed'] = True
+            break
+    return redirect(url_for('challenges'))
 
 @app.route('/profile')
+@app.route('/profile.html')
 def profile():
     return render_template('profile.html')
 

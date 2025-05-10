@@ -5,58 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Games - DharmaDarshan</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Game-specific styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #181e2a 0%, #232946 100%);
+            color: #f6f7fb;
+            min-height: 100vh;
+        }
+        .header {
+            background: rgba(30, 35, 51, 0.98);
+            color: #00eaff;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 20px 0 18px 0;
+            text-align: center;
+            box-shadow: 0 4px 28px 0 #00eaff33;
+            border-bottom: 2px solid #00eaff44;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .menu-btn {
+            position: absolute;
+            left: 24px;
+            top: 28px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #0fffc1;
+            text-shadow: 0 0 12px #00eaff99;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .menu-btn:hover {
+            color: #fff;
+            text-shadow: 0 0 24px #00eaffcc;
+        }
+        .sidebar {
+            position: fixed;
+            left: -270px;
+            top: 0;
+            height: 100vh;
+            width: 240px;
+            background: linear-gradient(135deg, #232946 60%, #181e2a 100%);
+            color: #f6f7fb;
+            box-shadow: 4px 0 24px 0 #00eaff33;
+            padding: 32px 18px 18px 18px;
+            transition: left 0.35s cubic-bezier(.7,-0.2,.3,1.3);
+            z-index: 999;
+            border-top-right-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            color: #00eaff;
+            font-weight: 500;
+            margin: 18px 0;
+            text-decoration: none;
+            font-size: 1.08rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .sidebar a:hover {
+            background: #0fffc122;
+            color: #fff;
+            box-shadow: 0 0 12px 2px #00eaff99;
+        }
+        .back-btn {
+            font-size: 1.3rem;
+            color: #0fffc1;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-block;
+            text-shadow: 0 0 10px #00eaff99;
+        }
         .games-container {
-            padding: 20px;
+            padding: 28px 12px 28px 12px;
             margin-top: 60px;
             margin-bottom: 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 28px;
         }
-        
         .game-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
+            background: linear-gradient(135deg, #232946 60%, #181e2a 100%);
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            box-shadow: 0 0 24px 2px #00eaff44, 0 4px 16px #0008;
+            transition: transform 0.25s cubic-bezier(.7,1.7,.3,1.3), box-shadow 0.25s, border 0.25s;
             cursor: pointer;
             text-align: center;
+            border: 2px solid #00eaff33;
+            position: relative;
+            opacity: 0;
+            animation: fadeInGlow 1s cubic-bezier(.55,1.45,.45,1) forwards;
         }
-        
         .game-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.055) rotate(-1deg);
+            box-shadow: 0 0 48px 8px #00eaffcc, 0 8px 32px #000a;
+            border: 2.5px solid #00eaff;
+            z-index: 2;
         }
-        
         .game-image {
             width: 100%;
-            height: 150px;
+            height: 170px;
             object-fit: cover;
+            border-bottom: 1.5px solid #00eaff33;
+            box-shadow: 0 2px 16px #00eaff22;
         }
-        
         .game-info {
-            padding: 15px;
+            padding: 20px 14px 18px 14px;
         }
-        
         .game-title {
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 10px;
-            color: #333;
+            color: #0fffc1;
+            font-size: 1.19rem;
+            text-shadow: 0 0 12px #00eaff99;
+            letter-spacing: 0.5px;
+            transition: color 0.2s, text-shadow 0.2s;
         }
-        
+        .game-card:hover .game-title {
+            color: #fff;
+            text-shadow: 0 0 28px #00eaffcc;
+        }
         .game-desc {
-            color: #666;
-            font-size: 0.9rem;
+            color: #f6f7fbcc;
+            font-size: 1.05rem;
+            letter-spacing: 0.2px;
         }
-        
+        .footer {
+            background: rgba(30, 35, 51, 0.98);
+            color: #00eaff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            font-size: 1.6rem;
+            padding: 18px 0 14px 0;
+            position: fixed;
+            width: 100vw;
+            left: 0;
+            bottom: 0;
+            box-shadow: 0 -2px 16px #00eaff33;
+            border-top: 2px solid #00eaff44;
+            z-index: 100;
+        }
+        .footer i {
+            cursor: pointer;
+            color: #0fffc1;
+            text-shadow: 0 0 10px #00eaff99;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .footer i:hover {
+            color: #fff;
+            text-shadow: 0 0 24px #00eaffcc;
+        }
         @media (max-width: 768px) {
             .games-container {
                 grid-template-columns: 1fr;
             }
+            .header {
+                font-size: 1.2rem;
+                padding: 14px 0 12px 0;
+            }
+            .sidebar {
+                width: 85vw;
+                min-width: 0;
+            }
+        }
+        @keyframes fadeInGlow {
+            from { opacity: 0; filter: blur(8px) brightness(0.7); transform: translateY(20px) scale(0.97); }
+            60% { opacity: 1; filter: blur(2px) brightness(1.1); transform: translateY(-2px) scale(1.01); }
+            to { opacity: 1; filter: blur(0) brightness(1); transform: translateY(0) scale(1); }
         }
     </style>
 </head>
@@ -72,13 +198,15 @@
         <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
         <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
         <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('channels') }}">Channnels</a>
         <a href="{{ url_for('community') }}">Community Support</a>
         <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
     </div>
     
     <div class="games-container">
         <div class="game-card" onclick="launchGame('karma')">
-            <img src="{{ url_for('static', filename='Gallery/karma-game.jpg') }}" alt="Karma Game" class="game-image">
+            <img src="{{ url_for('static', filename='Gallery/Game1.jpg') }}" alt="Karma Game" class="game-image">
             <div class="game-info">
                 <div class="game-title">The Karma Challenge</div>
                 <div class="game-desc">Make choices and see their karmic consequences</div>
@@ -86,7 +214,7 @@
         </div>
         
         <div class="game-card" onclick="launchGame('dharma')">
-            <img src="{{ url_for('static', filename='Gallery/dharma-game.jpg') }}" alt="Dharma Game" class="game-image">
+            <img src="{{ url_for('static', filename='Gallery/Game2.jpg') }}" alt="Dharma Game" class="game-image">
             <div class="game-info">
                 <div class="game-title">Dharma Path</div>
                 <div class="game-desc">Navigate through moral dilemmas from ancient texts</div>
@@ -94,7 +222,7 @@
         </div>
         
         <div class="game-card" onclick="launchGame('meditation')">
-            <img src="{{ url_for('static', filename='Gallery/meditation-game.jpg') }}" alt="Meditation Game" class="game-image">
+            <img src="{{ url_for('static', filename='Gallery/Game3.jpg') }}" alt="Meditation Game" class="game-image">
             <div class="game-info">
                 <div class="game-title">Mindful Moments</div>
                 <div class="game-desc">Interactive meditation and mindfulness exercises</div>
@@ -102,7 +230,7 @@
         </div>
         
         <div class="game-card" onclick="launchGame('quiz')">
-            <img src="{{ url_for('static', filename='Gallery/quiz-game.jpg') }}" alt="Quiz Game" class="game-image">
+            <img src="{{ url_for('static', filename='Gallery/Game4.jpg') }}" alt="Quiz Game" class="game-image">
             <div class="game-info">
                 <div class="game-title">Dharma Quiz</div>
                 <div class="game-desc">Test your knowledge of spiritual teachings</div>

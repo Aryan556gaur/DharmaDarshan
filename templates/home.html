@@ -5,8 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dharmadarshan App</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #181e2a 0%, #232946 100%);
+            color: #f6f7fb;
+            margin: 0;
+        }
+        .header {
+            background: rgba(30,35,51,0.98);
+            color: #00eaff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 28px 0 #00eaff33;
+            border-bottom: 2px solid #00eaff44;
+        }
+        .menu-btn {
+            position: absolute;
+            left: 24px;
+            top: 24px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #0fffc1;
+            text-shadow: 0 0 12px #00eaff99;
+            transition: color .2s,text-shadow .2s;
+        }
+        .menu-btn:hover { color: #fff; text-shadow:0 0 24px #00eaffcc; }
+        .sidebar {
+            position: fixed;
+            left: -270px;
+            top: 0;
+            height: 100vh;
+            width: 240px;
+            background: linear-gradient(135deg, #232946 60%, #181e2a 100%);
+            color: #f6f7fb;
+            padding: 32px 18px;
+            box-shadow: 4px 0 24px 0 #00eaff33;
+            border-top-right-radius: 16px;
+            border-bottom-right-radius: 16px;
+            transition: left .35s cubic-bezier(.7,-0.2,.3,1.3);
+            z-index:999;
+        }
+        .sidebar.active { left:0; }
+        .sidebar a, .sidebar .back-btn {
+            display: block;
+            color: #00eaff;
+            margin: 12px 0;
+            text-decoration: none;
+            transition: background .2s, box-shadow .2s;
+        }
+        .sidebar a:hover, .sidebar .back-btn:hover {
+            background: #0fffc122;
+            box-shadow: 0 0 12px 2px #00eaff99;
+            color:#fff;
+        }
+        .feed-container {
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .feed-item {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(30,35,51,0.95);
+            margin: 0;
+            box-shadow: 0 2px 12px #0008;
+            border-bottom: 1px solid #393e6e;
+            animation: fadeInGlow 1s ease-in-out;
+        }
+        .feed-item img {
+            max-width: 60%;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px #00eaff55;
+            margin-bottom: 20px;
+        }
+        .feed-text {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 80%;
+            color: #f6f7fbcc;
+        }
+        .footer {
+            background: rgba(30,35,51,0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            font-size: 1.6rem;
+            padding: 18px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100vw;
+            left: 0;
+            box-shadow: 0 -2px 16px #00eaff33;
+            border-top: 2px solid #00eaff44;
+            z-index:100;
+        }
+        .footer i {
+            color: #0fffc1;
+            cursor: pointer;
+            transition: color .2s,text-shadow .2s;
+        }
+        .footer i:hover { color:#fff; text-shadow:0 0 24px #00eaffcc; }
+        @keyframes fadeInGlow {
+            from { opacity:0; transform:translateY(20px) scale(0.97); filter:blur(8px) brightness(0.7);} 
+            60% { opacity:1; transform:translateY(-2px) scale(1.01); filter:blur(2px) brightness(1.1);} 
+            to { opacity:1; transform:translateY(0) scale(1); filter:blur(0) brightness(1);} 
+        }
+    </style>
 </head>
 <body>
     <div class="header">
@@ -18,8 +134,10 @@
         <a href="#" onclick="redirectTo('spiritual.html')">Spiritual Wisdom Repository</a>
         <a href="#" onclick="redirectTo('games.html')">Interactive Decision-Making Games</a>
         <a href="#" onclick="redirectTo('guidance.html')">Personalized Dharma Guidance</a>
+        <a href="#" onclick="redirectTo('channels.html')">Channels</a>
         <a href="#" onclick="redirectTo('community.html')">Community Support</a>
         <a href="#" onclick="redirectTo('challenges.html')">Daily Dharma Challenges</a>
+        <a href="#" onclick="redirectTo('profile.html')">Profile</a>
     </div>
     
     <div class="feed-container" id="feedContainer">
@@ -32,7 +150,7 @@
             <div class="feed-text">A tale from the Ramayana: How Hanuman's devotion moved mountains.</div>
         </div>
         <div class="feed-item">
-            <img src="/Gallery/The Bhagvad Gita.jpeg" alt="Ancient Story">
+            <img src="/Gallery/The Bhagvad Gita.jpg" alt="Ancient Story">
             <div class="feed-text">Lessons from the Mahabharata: The importance of duty and righteousness.</div>
         </div>
     </div>

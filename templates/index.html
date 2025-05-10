@@ -5,22 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DharmaDarshan - Home</title>
     <link rel="stylesheet" href="{{ url_for('serve_css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Additional inline styles specific to index.html */
-        .feed-container {
-            scroll-behavior: smooth;
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1f1f1f;
+            color: #f6f7fb;
         }
+
+        /* Header */
+        .header {
+            background-color: #2a2a2a;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-btn {
+            position: absolute;
+            left: 26px;
+            top: 28px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #0fffc1;
+            text-shadow: 0 0 12px #00eaff99;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .menu-btn:hover {
+            color: #fff;
+            text-shadow: 0 0 24px #00eaffcc;
+        }
+        .sidebar {
+            position: fixed;
+            left: -270px;
+            top: 0;
+            height: 100vh;
+            width: 240px;
+            background: linear-gradient(135deg, #232946 60%, #181e2a 100%);
+            color: #f6f7fb;
+            box-shadow: 4px 0 24px 0 #00eaff33;
+            padding: 32px 18px 18px 18px;
+            transition: left 0.35s cubic-bezier(.7,-0.2,.3,1.3);
+            z-index: 999;
+            border-top-right-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            color: #00eaff;
+            font-weight: 500;
+            margin: 18px 0;
+            text-decoration: none;
+            font-size: 1.08rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .sidebar a:hover {
+            background: #0fffc122;
+            color: #fff;
+            box-shadow: 0 0 12px 2px #00eaff99;
+        }
+        .back-btn {
+            font-size: 1.3rem;
+            color: #0fffc1;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-block;
+            text-shadow: 0 0 10px #00eaff99;
+        }
+        /* Feed Container */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
         .feed-item {
-            scroll-snap-align: start;
+            background-color: #444;
+            border-radius: 12px;
+            box-shadow: 0 0 16px 4px rgba(0, 234, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .feed-text {
+            font-size: 1.25rem;
+            color: #0d0e0f;
+            text-shadow: 0 0 8px #00eaff99;
+            max-width: 80%;
+            margin-top: 10px;
+        }
+
+        iframe {
+            border: none;
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            background-color: #2a2a2a;
+            padding: 10px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer i {
+            font-size: 1.5rem;
+            color: #f6f7fb;
+            cursor: pointer;
+        }
+
+        .footer i:hover {
+            color: #00eaff;
+        }
+
+        /* Media Queries */
+        /* For small screens, adjust the sidebar and feed container */
+        @media (max-width: 768px) {
+            /* Sidebar */
+            .sidebar {
+                width: 200px; /* Reduced width */
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header .menu-btn {
+                font-size: 25px; /* Smaller button */
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer i {
+                font-size: 1.2rem;
+                margin: 10px 0;
+            }
+
+            .feed-container {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .feed-item {
+                padding: 10px;
+            }
+
+            .feed-text {
+                font-size: 1.1rem;
+                max-width: 100%;
+            }
+
+            iframe {
+                max-height: 300px; /* Smaller iframe for mobile */
+            }
+        }
+
+        /* For extra small screens (mobile portrait) */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 180px; /* Even smaller sidebar */
+            }
+
+            .header .menu-btn {
+                font-size: 20px; /* Adjust menu button size */
+            }
+
+            .footer i {
+                font-size: 1rem; /* Adjust footer icon size */
+            }
+
+            .feed-container {
+                padding: 5px;
+            }
+
+            .feed-item {
+                padding: 8px;
+            }
+
+            .feed-text {
+                font-size: 1rem; /* Adjust font size */
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
+        <!-- Menu Button to show the sidebar -->
         <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</div>
-        ⚡ Daily Dharma Challenge: Meditate for 10 minutes today
+        🎮 DharmaDarshan
     </div>
     
     <div class="sidebar" id="sidebar">
@@ -28,6 +226,7 @@
         <a href="{{ url_for('spiritual') }}">Spiritual Wisdom Repository</a>
         <a href="{{ url_for('games') }}">Interactive Decision-Making Games</a>
         <a href="{{ url_for('guidance') }}">Personalized Dharma Guidance</a>
+        <a href="{{ url_for('channels') }}">Channels</a>
         <a href="{{ url_for('community') }}">Community Support</a>
         <a href="{{ url_for('challenges') }}">Daily Dharma Challenges</a>
     </div>
@@ -35,7 +234,7 @@
     <div class="feed-container" id="feedContainer">
         {% for item in feed_items %}
         <div class="feed-item">
-            <img src="{{ url_for('serve_image', filename=item.img) }}" alt="Dharma Wisdom" loading="lazy">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ get_video_id(item.video_url) }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <div class="feed-text">{{ item.text }}</div>
         </div>
         {% endfor %}
@@ -54,6 +253,7 @@
             'spiritual': '{{ url_for("spiritual") }}',
             'games': '{{ url_for("games") }}',
             'guidance': '{{ url_for("guidance") }}',
+            'channels': '{{ url_for("channels") }}',
             'community': '{{ url_for("community") }}',
             'challenges': '{{ url_for("challenges") }}',
             'profile': '{{ url_for("profile") }}',
@@ -76,59 +276,6 @@
                 console.error('Route not found:', page);
             }
         }
-
-        // Feed scrolling functionality
-        let currentIndex = 0;
-        const feedContainer = document.getElementById('feedContainer');
-        const feedItems = document.querySelectorAll('.feed-item');
-        
-        // Handle mouse wheel scrolling
-        feedContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            if (e.deltaY > 0 && currentIndex < feedItems.length - 1) {
-                currentIndex++;
-            } else if (e.deltaY < 0 && currentIndex > 0) {
-                currentIndex--;
-            }
-            scrollToFeedItem(currentIndex);
-        });
-
-        // Handle touch events for mobile
-        let touchStartY = 0;
-        feedContainer.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: false });
-
-        feedContainer.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touchY = e.touches[0].clientY;
-            const deltaY = touchY - touchStartY;
-            
-            if (Math.abs(deltaY) > 50) {
-                if (deltaY > 0 && currentIndex > 0) {
-                    currentIndex--;
-                } else if (deltaY < 0 && currentIndex < feedItems.length - 1) {
-                    currentIndex++;
-                }
-                scrollToFeedItem(currentIndex);
-                touchStartY = touchY;
-            }
-        }, { passive: false });
-
-        // Smooth scroll to specific feed item
-        function scrollToFeedItem(index) {
-            feedContainer.scrollTo({
-                top: index * window.innerHeight,
-                behavior: 'smooth'
-            });
-        }
-
-        // Initialize first item as active
-        window.addEventListener('load', () => {
-            if (feedItems.length > 0) {
-                feedItems[0].classList.add('active');
-            }
-        });
     </script>
 </body>
 </html>

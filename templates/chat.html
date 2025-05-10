@@ -5,27 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Psychiatrist and Spiritual Expert Chatbot</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #181e2a 0%, #232946 100%);
+            min-height: 100vh;
+            color: #f6f7fb;
+        }
         .chat-container {
-            max-height: 500px;
+            max-height: 60vh;
+            min-height: 300px;
             overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin-bottom: 0;
+            padding: 24px 12px 24px 12px;
+            border: none;
+            border-radius: 16px;
+            background: rgba(30, 35, 51, 0.95);
+            box-shadow: 0 4px 32px 0 rgba(0,0,0,0.45), 0 0 16px 2px #00eaff44;
+            transition: box-shadow 0.3s;
+            backdrop-filter: blur(2px);
+        }
+        .message-row {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 18px;
         }
         .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
+            max-width: 70%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 1.07rem;
+            box-shadow: 0 2px 16px 0 #00eaff44, 0 1.5px 8px 0 #0008;
+            position: relative;
+            opacity: 0;
+            animation: fadeInGlow 0.8s cubic-bezier(.55,1.45,.45,1) forwards;
+            border: 1.5px solid #00eaff33;
+            transition: box-shadow 0.2s, border 0.2s;
         }
         .user-message {
-            background-color: #e3f2fd;
-            margin-left: 20%;
+            background: linear-gradient(135deg, #0fffc1 0%, #00eaff 100%);
+            color: #181e2a;
+            margin-left: auto;
+            margin-right: 8px;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 0 16px 2px #00eaff88, 0 2px 8px #0008;
+            border: 1.5px solid #00eaffbb;
+        }
+        .user-message:hover, .user-message:focus {
+            box-shadow: 0 0 24px 4px #00eaffcc, 0 2px 12px #000a;
+            border: 2px solid #00eaff;
         }
         .bot-message {
-            background-color: #f5f5f5;
-            margin-right: 20%;
+            background: linear-gradient(135deg, #232946 0%, #393e6e 100%);
+            color: #f6f7fb;
+            margin-right: auto;
+            margin-left: 8px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 0 12px 2px #6c63ff55, 0 2px 8px #0008;
+            border: 1.5px solid #6c63ff99;
+        }
+        .bot-message:hover, .bot-message:focus {
+            box-shadow: 0 0 22px 4px #6c63ff99, 0 2px 12px #000a;
+            border: 2px solid #6c63ff;
+        }
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #232946;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin: 0 8px;
+            box-shadow: 0 0 10px 2px #00eaff44, 0 2px 4px #0004;
+            border: 1.5px solid #393e6e;
+        }
+        .user-avatar {
+            background: linear-gradient(135deg, #00eaff 0%, #0fffc1 100%);
+            color: #181e2a;
+            box-shadow: 0 0 12px 2px #00eaff88, 0 2px 4px #0004;
+            border: 1.5px solid #00eaffbb;
+        }
+        .bot-avatar {
+            background: linear-gradient(135deg, #393e6e 0%, #232946 100%);
+            color: #00eaff;
+            box-shadow: 0 0 10px 2px #6c63ff88, 0 2px 4px #0004;
+            border: 1.5px solid #6c63ff99;
+        }
+        .sticky-input {
+            position: sticky;
+            bottom: 0;
+            background: rgba(30, 35, 51, 0.98);
+            padding-top: 12px;
+            box-shadow: 0 -2px 16px 0 #00eaff33, 0 -2px 8px #0008;
+            z-index: 10;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+        .form-control {
+            background: #232946;
+            color: #f6f7fb;
+            border: 1.5px solid #393e6e;
+            box-shadow: 0 0 8px 0 #00eaff22;
+            transition: box-shadow 0.2s, border 0.2s;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 2px #00eaffcc, 0 0 10px 2px #00eaff99;
+            border-color: #00eaff;
+            background: #181e2a;
+            color: #fff;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00eaff 0%, #0fffc1 100%);
+            color: #181e2a;
+            border: none;
+            box-shadow: 0 0 12px 2px #00eaff88;
+            font-weight: 700;
+            transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, #0fffc1 0%, #00eaff 100%);
+            color: #111;
+            box-shadow: 0 0 24px 4px #00eaffcc;
+        }
+        @media (max-width: 600px) {
+            .chat-container {
+                max-height: 50vh;
+                padding: 10px 4px;
+            }
+            .message {
+                font-size: 0.98rem;
+                padding: 10px 12px;
+            }
+            .avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+        }
+        @keyframes fadeInGlow {
+            from { opacity: 0; filter: blur(8px) brightness(0.7); transform: translateY(15px) scale(0.97); }
+            60% { opacity: 1; filter: blur(2px) brightness(1.1); transform: translateY(-2px) scale(1.01); }
+            to { opacity: 1; filter: blur(0) brightness(1); transform: translateY(0) scale(1); }
         }
     </style>
 </head>
@@ -37,19 +160,30 @@
         <div class="chat-container" id="chatContainer">
             {% if chat_history %}
                 {% for message in chat_history %}
-                    <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
-                        <strong>{% if message.role == 'user' %}You{% else %}Bot{% endif %}:</strong> {{ message.content }}
+                    <div class="message-row {% if message.role == 'user' %}justify-content-end{% else %}justify-content-start{% endif %}">
+                        {% if message.role == 'bot' %}
+                            <div class="avatar bot-avatar me-2">🤖</div>
+                        {% endif %}
+                        <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                            <span style="font-weight:700; font-size:0.97em">{% if message.role == 'user' %}You{% else %}Bot{% endif %}:</span>
+                            <span style="font-weight:400;"> {{ message.content }} </span>
+                        </div>
+                        {% if message.role == 'user' %}
+                            <div class="avatar user-avatar ms-2">🧑</div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% endif %}
         </div>
 
-        <form method="POST" class="mb-3">
-            <div class="input-group">
-                <input type="text" name="user_input" class="form-control" placeholder="Type your message here..." required>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </div>
-        </form>
+        <div class="sticky-input">
+            <form method="POST" class="mb-1">
+                <div class="input-group">
+                    <input type="text" name="user_input" class="form-control" placeholder="Type your message here..." required autocomplete="off">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>

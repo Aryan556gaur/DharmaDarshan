@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DharmaDarshan Community</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #36393f;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .header {
+      background-color: #202225;
+      padding: 1rem;
+      font-weight: bold;
+      border-bottom: 1px solid #2f3136;
+    }
+
+    .chat {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+    }
+
+    .message .name {
+      font-weight: bold;
+      color: #7289da;
+    }
+
+    .input-area {
+      padding: 1rem;
+      background-color: #2f3136;
+      border-top: 1px solid #202225;
+    }
+
+    .input-area input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #40444b;
+      color: white;
+    }
+
+    .input-area input:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Dharma Sabha</div>
+
+  <div class="chat">
+    {% for msg in messages %}
+      {% set parts = msg.split(":", 1) %}
+      <div class="message">
+        <span class="name">{{ parts[0] }}:</span> {{ parts[1] }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <form method="POST" class="input-area">
+    <input type="text" name="user_input" placeholder="Message #dharma-community" autocomplete="off" required />
+  </form>
+</body>
+</html>
