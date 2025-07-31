@@ -69,4 +69,22 @@ python main.py
 
 Then visit: http://localhost:5000
 
+🤝 Contributing
+We welcome contributions that align with the mission of DharmaDarshan.
+
+Fork this repository
+
+Create your feature branch (git checkout -b feature/new-feature)
+
+Commit your changes (git commit -m 'Add new feature')
+
+Push to the branch (git push origin feature/new-feature)
+
+Open a Pull Request
+
+📄 License
+This project is licensed under the MIT License.
+
+Let Dharma guide your steps — one day, one lesson, one challenge at a time. 🙏
+
 ⚠️ Make sure the FAISS index files are correctly placed in faiss_index_all/.
