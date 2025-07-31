@@ -11,14 +11,7 @@ DharmaDarshan is a transformative platform designed to nurture your personal and
 🔹 Mindful Mini-Games: Engage with mentally stimulating and spiritually uplifting games designed to improve clarity and focus.
 
 🔹 Motivational Content Feed: A home page that keeps your spirit energized with:
-
-Inspirational quotes
-
-Mythological reels
-
-Dharma-based life lessons
-
-Spiritual stories
+         Inspirational quotes      Mythological reels         Dharma-based life lessons       Spiritual stories
 
 🔹 Daily Dharma Challenges: Stay on track with daily tasks to keep your energy aligned and your spirit motivated.
 
@@ -29,13 +22,9 @@ Spiritual stories
 🛠️ Tech Stack
 
 Python
-
 FAISS for semantic search
-
 Flask
-
 HTML/CSS/JS for frontend templates
-
 Static asset system (static/, templates/)
 
 Custom model logic in model.py
