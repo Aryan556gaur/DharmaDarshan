@@ -4,6 +4,8 @@ DharmaDarshan
 
 DharmaDarshan is a transformative platform designed to nurture your personal and spiritual growth through a wide range of immersive experiences. From community support and daily dharma challenges to motivational feeds and guidance from spiritual gurus — DharmaDarshan is your companion on the path to a more mindful, fulfilling life.
 
+---
+
 🌟 Key Features
 
 🔹 Community Support: Connect with like-minded individuals in dedicated communities to share experiences and grow together.
