@@ -1,5 +1,7 @@
 DharmaDarshan
 
+---
+
 DharmaDarshan is a transformative platform designed to nurture your personal and spiritual growth through a wide range of immersive experiences. From community support and daily dharma challenges to motivational feeds and guidance from spiritual gurus — DharmaDarshan is your companion on the path to a more mindful, fulfilling life.
 
 🌟 Key Features
@@ -19,26 +21,30 @@ DharmaDarshan is a transformative platform designed to nurture your personal and
 
 🔹 Follow Channels: Subscribe to topic-specific channels for curated content and events.
 
-🛠️ Tech Stack
+---
 
+🛠️ Tech Stack
+```
 Python
 FAISS for semantic search
 Flask
 HTML/CSS/JS for frontend templates
 Static asset system (static/, templates/)
-
+```
 Custom model logic in model.py
 
+---
+
 📁 Project Structure
-bash
-Copy
-Edit
+```
 /static/                 # Static assets (JS, CSS, images)
 templates/              # Front-end HTML templates
 faiss_index_all/        # Pre-computed FAISS indices
 main.py                 # App entry point
 model.py                # Core search and logic handler
 requirements.txt        # Python dependencies
+```
+---
 
 ⚙️ Setup Instructions
 
@@ -57,7 +63,7 @@ Run the app
 python main.py
 
 Then visit: http://localhost:5000
-
+---
 🤝 Contributing
 We welcome contributions that align with the mission of DharmaDarshan.
 
@@ -70,7 +76,7 @@ Commit your changes (git commit -m 'Add new feature')
 Push to the branch (git push origin feature/new-feature)
 
 Open a Pull Request
-
+---
 📄 License
 This project is licensed under the MIT License.
 
